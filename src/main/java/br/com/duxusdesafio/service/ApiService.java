@@ -1,10 +1,12 @@
 package br.com.duxusdesafio.service;
 
+import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +20,28 @@ import java.util.Map;
 public class ApiService {
 
     /**
-     * Vai retornar uma lista com os nomes dos integrantes do time daquela data
+     * Retorna uma lista com os nomes dos integrantes do time na data especificada.
+     *
+     * @param data A data para a qual se deseja obter os integrantes do time.
+     * @param todosOsTimes Lista contendo todos os times disponíveis.
+     * @return Lista de nomes dos integrantes do time na data fornecida.
      */
-    public Time timeDaData(LocalDate data, List<Time> todosOsTimes){
+    public List<String> timeDaData(LocalDate data, List<Time> todosOsTimes) {
         // TODO Implementar método seguindo as instruções!
-        return null;
+
+        List<String> integrantesTime = new ArrayList<>();
+
+        for (Time time : todosOsTimes) {
+            if (time.getData().equals(data)) {
+                for (ComposicaoTime composicaoTime : time.getComposicaoTime()) {
+                    integrantesTime.add(composicaoTime.getIntegrante().getNome());
+                }
+            }
+        }
+
+        return integrantesTime;
     }
+
 
     /**
      * Vai retornar o integrante que tiver presente na maior quantidade de times
