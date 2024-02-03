@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,6 @@ public class ApiService {
      * @return Lista de nomes dos integrantes do time na data fornecida.
      */
     public List<String> timeDaData(LocalDate data, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
 
         List<String> integrantesTime = new ArrayList<>();
 
@@ -47,9 +47,40 @@ public class ApiService {
      * Vai retornar o integrante que tiver presente na maior quantidade de times
      * dentro do período
      */
-    public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+    public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
+        // Map responsavel por armazenar a quantidade de vezes que o integrante aparece nos times
+        Map<Integrante, Integer> contagemIntegrante = new HashMap<>();
+
+        // Percorrendo todos os times
+        for (Time time : todosOsTimes) {
+            // condição para verificar se as datas estão entre a data inicial e final
+            if(time.getData().isBefore(dataFinal) && time.getData().isAfter(dataInicial)) {
+                // percorrendo os integrantes do time
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
+                    // Salvando cada integrante na variavel
+                    Integrante integrante = composicao.getIntegrante();
+                    // adicionando o integrante no mapa e contabilizando
+                    contagemIntegrante.put(integrante, contagemIntegrante.getOrDefault(integrante, 0) + 1);
+                }
+            }
+        }
+
+        // iniciando as variaveis
+        Integrante integranteMaisUsado = null;
+        int maiorContagem = 0;
+
+        // Percorrendo o mapa
+        for (Map.Entry<Integrante, Integer> entry : contagemIntegrante.entrySet()) {
+            // Verificando se o valor atual é maior que o anterior
+            if (entry.getValue() > maiorContagem) {
+                // Caso sejá, atualiza a variavel
+                maiorContagem = entry.getValue();
+                integranteMaisUsado = entry.getKey();
+            }
+        }
+
+        // retorna o integrante mais usado
+        return integranteMaisUsado;
     }
 
     /**
