@@ -1,7 +1,7 @@
 package br.com.duxusdesafio.model;
 
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 

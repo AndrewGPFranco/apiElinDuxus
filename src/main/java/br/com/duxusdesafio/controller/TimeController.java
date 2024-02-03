@@ -1,6 +1,7 @@
 package br.com.duxusdesafio.controller;
 
 import br.com.duxusdesafio.model.Time;
+import br.com.duxusdesafio.repository.TimeRepository;
 import br.com.duxusdesafio.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,11 +19,12 @@ import java.util.List;
 @RequestMapping("/api/times")
 public class TimeController {
     private ApiService apiService;
-    private
+    private TimeRepository timeRepository;
 
     @Autowired
-    public TimeController(ApiService apiService) {
+    public TimeController(ApiService apiService, TimeRepository timeRepository) {
         this.apiService = apiService;
+        this.timeRepository = timeRepository;
     }
 
     @GetMapping("/integrantes")
@@ -30,7 +32,7 @@ public class TimeController {
             @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     ){
 
-        List<Time> todosOsTimes =
+        List<Time> todosOsTimes = timeRepository.findAll();
         List<String> integrantesDoTime = apiService.timeDaData(data, todosOsTimes);
 
         return new ResponseEntity<>(integrantesDoTime, HttpStatus.OK);
