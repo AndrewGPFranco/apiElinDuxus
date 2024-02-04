@@ -37,10 +37,12 @@ public class CadastroController {
         return ResponseEntity.ok(integrante);
     }
 
+    @SuppressWarnings("null")
     @PostMapping("/times")
     public ResponseEntity<Time> cadastrarTime(@RequestBody TimeDto dto) {
         Time time = new Time();
         time.setData(dto.getData());
+        time.setNome(dto.getNome());
 
         timeRepository.save(time);
 

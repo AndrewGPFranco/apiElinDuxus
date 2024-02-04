@@ -16,6 +16,9 @@ public class Time {
 
 	@Column(name = "Data")
     private LocalDate data;
+
+	@Column(name = "Nome")
+	private String nome;
 	
 	@OneToMany(mappedBy = "time", cascade = CascadeType.ALL)
 	private List<ComposicaoTime> composicaoTime;
@@ -23,9 +26,10 @@ public class Time {
 	public Time() {
 	}
 
-	public Time(LocalDate data, List<ComposicaoTime> composicaoTime) {
+	public Time(LocalDate data, List<ComposicaoTime> composicaoTime, String nome) {
 		this.data = data;
 		this.composicaoTime = composicaoTime;
+		this.nome = nome;
 	}
 
 	public long getId() {
@@ -50,6 +54,14 @@ public class Time {
 
 	public void setComposicaoTime(List<ComposicaoTime> composicaoTime) {
 		this.composicaoTime = composicaoTime;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 
