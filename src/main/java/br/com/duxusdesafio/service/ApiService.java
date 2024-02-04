@@ -4,7 +4,6 @@ import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,16 +53,17 @@ public class ApiService {
      * dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // Map responsavel por armazenar a quantidade de vezes que o integrante aparece nos times
+        // Map responsavel por armazenar a quantidade de vezes que o integrante aparece
+        // nos times
         Map<Integrante, Integer> contagemIntegrante = new HashMap<>();
 
         // Percorrendo todos os times
         for (Time time : todosOsTimes) {
             // condição para verificar se as datas estão entre a data inicial e final
-            if (time.getData().isBefore(dataFinal) && time.getData().isAfter(dataInicial)) {
+            if ((dataInicial.compareTo(time.getData()) <= 0 && dataFinal.compareTo(time.getData()) >= 0)) {
                 // percorrendo os integrantes do time
                 for (ComposicaoTime composicao : time.getComposicaoTime()) {
-                    // Salvando cada integrante na variavel
+                    // Salvando cada integrante na variável
                     Integrante integrante = composicao.getIntegrante();
                     // adicionando o integrante no mapa e contabilizando
                     contagemIntegrante.put(integrante, contagemIntegrante.getOrDefault(integrante, 0) + 1);
