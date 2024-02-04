@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados
@@ -88,17 +89,43 @@ public class ApiService {
      * dentro do período
      */
     public List<String> timeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
         return null;
     }
 
     /**
      * Vai retornar a função mais comum nos times dentro do período
      */
-    public String funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+    public String funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
+        // Criando um mapa
+        Map<String, Integer> contagemFuncoes = new HashMap<>();
+
+        // Percorrer a lista de times entre as datas
+        for (Time time : todosOsTimes) {
+            if (dataInicial == null || dataFinal == null || (dataInicial.compareTo(time.getData()) <= 0 && dataFinal.compareTo(time.getData()) >= 0)) {
+                // Obtendo os integrantes
+                List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
+                // Incrementando
+                for (ComposicaoTime composicao : composicaoTime) {
+                    Integrante integrante = composicao.getIntegrante();
+                    String funcao = integrante.getFuncao();
+                    contagemFuncoes.put(funcao, contagemFuncoes.getOrDefault(funcao, 0) + 1);
+                }
+            }
+        }
+
+        // Encontrando a função mais utilizadas
+        String funcaoMaisComum = "";
+        int maiorContagem = 0;
+        for (Map.Entry<String, Integer> entry : contagemFuncoes.entrySet()) {
+            if (entry.getValue() > maiorContagem) {
+                maiorContagem = entry.getValue();
+                funcaoMaisComum = entry.getKey();
+            }
+        }
+
+        return funcaoMaisComum;
     }
+
 
     /**
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
