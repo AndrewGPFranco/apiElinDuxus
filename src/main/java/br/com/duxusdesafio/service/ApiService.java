@@ -24,7 +24,8 @@ public class ApiService {
     /**
      * Retorna uma lista com os nomes dos integrantes do time na data especificada.
      *
-     * @param data A data para a qual se deseja obter os integrantes do time.
+     * @param data         A data para a qual se deseja obter os integrantes do
+     *                     time.
      * @param todosOsTimes Lista contendo todos os times disponíveis.
      * @return Lista de nomes dos integrantes do time na data fornecida.
      */
@@ -47,19 +48,19 @@ public class ApiService {
         return timeDaData;
     }
 
-
     /**
      * Vai retornar o integrante que tiver presente na maior quantidade de times
      * dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // Map responsavel por armazenar a quantidade de vezes que o integrante aparece nos times
+        // Map responsavel por armazenar a quantidade de vezes que o integrante aparece
+        // nos times
         Map<Integrante, Integer> contagemIntegrante = new HashMap<>();
 
         // Percorrendo todos os times
         for (Time time : todosOsTimes) {
             // condição para verificar se as datas estão entre a data inicial e final
-            if(time.getData().isBefore(dataFinal) && time.getData().isAfter(dataInicial)) {
+            if (time.getData().isBefore(dataFinal) && time.getData().isAfter(dataInicial)) {
                 // percorrendo os integrantes do time
                 for (ComposicaoTime composicao : time.getComposicaoTime()) {
                     // Salvando cada integrante na variavel
@@ -109,13 +110,10 @@ public class ApiService {
             }
         }
 
-        // Encontrar o integrante com mais aparição
-        String nomeMaisComum = null;
         int maiorQuantidade = 0;
         // Determinando o nome mais comum nos times
         for (Map.Entry<String, Integer> entry : integrantes.entrySet()) {
             if (entry.getValue() > maiorQuantidade) {
-                nomeMaisComum = entry.getKey();
                 maiorQuantidade = entry.getValue();
             }
         }
@@ -131,7 +129,6 @@ public class ApiService {
         return timeMaisComum;
     }
 
-
     /**
      * Vai retornar a função mais comum nos times dentro do período
      */
@@ -141,7 +138,8 @@ public class ApiService {
 
         // Percorrer a lista de times entre as datas
         for (Time time : todosOsTimes) {
-            if (dataInicial == null || dataFinal == null || (dataInicial.compareTo(time.getData()) <= 0 && dataFinal.compareTo(time.getData()) >= 0)) {
+            if (dataInicial == null || dataFinal == null
+                    || (dataInicial.compareTo(time.getData()) <= 0 && dataFinal.compareTo(time.getData()) >= 0)) {
                 // Obtendo os integrantes
                 List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
                 // Incrementando
@@ -170,7 +168,6 @@ public class ApiService {
         return funcaoMaisComum;
     }
 
-
     /**
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
@@ -179,7 +176,7 @@ public class ApiService {
         Map<String, Integer> contagemFranquias = new HashMap<>();
 
         // Iterando todos os times
-        for(Time time : todosOsTimes) {
+        for (Time time : todosOsTimes) {
             // Verificando algumas informações sobre as datas
             if (dataInicial == null || dataFinal == null ||
                     (dataInicial.compareTo(time.getData()) <= 0
@@ -187,7 +184,7 @@ public class ApiService {
                 // Definindo uma lista com as composições dos times
                 List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
                 // Iterando todas as composições
-                for(ComposicaoTime composicao : composicaoTime) {
+                for (ComposicaoTime composicao : composicaoTime) {
                     // Salvando o integrante em uma variavel
                     Integrante integrante = composicao.getIntegrante();
                     // Salvando a franquia de cada integrante
@@ -210,11 +207,10 @@ public class ApiService {
         return franquiaMaisFamosa;
     }
 
-
     /**
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
-    public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
+    public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
         // Criando um mapa para contar as franquias
         Map<String, Long> contagemFranquias = todosOsTimes.stream()
                 .filter(time -> dataInicial == null || dataFinal == null ||
@@ -230,7 +226,7 @@ public class ApiService {
     /**
      * Vai retornar o número (quantidade) de Funções dentro do período
      */
-    public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
+    public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
         // Criando um mapa para contar as funções
         Map<String, Long> contagemFuncoes = todosOsTimes.stream()
                 // Filtrando os times dentro do período das datas
