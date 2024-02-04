@@ -92,9 +92,45 @@ public class ApiService {
      * Vai retornar uma lista com os nomes dos integrantes do time mais comum
      * dentro do período
      */
-    public List<String> timeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        return null;
+    public List<String> timeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
+
+        // Mapa para armazenar os integrantes
+        Map<String, Integer> integrantes = new HashMap<>();
+
+        // Iterar por todos os times
+        for (Time time : todosOsTimes) {
+
+            // Salvar o nome dos integrantes dos times
+            List<ComposicaoTime> nomesIntegrantes = time.getComposicaoTime();
+
+            // Atualizar o mapa
+            for (ComposicaoTime nome : nomesIntegrantes) {
+                integrantes.put(String.valueOf(nome), integrantes.getOrDefault(nome, 0) + 1);
+            }
+        }
+
+        // Encontrar o integrante com mais aparição
+        String nomeMaisComum = null;
+        int maiorQuantidade = 0;
+        // Determinando o nome mais comum nos times
+        for (Map.Entry<String, Integer> entry : integrantes.entrySet()) {
+            if (entry.getValue() > maiorQuantidade) {
+                nomeMaisComum = entry.getKey();
+                maiorQuantidade = entry.getValue();
+            }
+        }
+
+        // Criar e retornar a lista com os nomes dos integrantes do time mais comum
+        List<String> timeMaisComum = new ArrayList<>();
+        for (String nome : integrantes.keySet()) {
+            if (integrantes.get(nome) == maiorQuantidade) {
+                timeMaisComum.add(nome);
+            }
+        }
+
+        return timeMaisComum;
     }
+
 
     /**
      * Vai retornar a função mais comum nos times dentro do período
