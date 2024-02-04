@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,21 +28,23 @@ public class TimeController {
     private TimeRepository timeRepository;
 
     @GetMapping("/integrantes")
-    public ResponseEntity<List<String>> obterTimeNaData(
-            @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
-    ){
+    public ResponseEntity<Map<String, Object>> obterTimeNaData(
+            @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
 
         List<Time> todosOsTimes = timeRepository.findAll();
         List<String> timeNaData = apiService.timeDaData(data, todosOsTimes);
 
-        return new ResponseEntity<>(timeNaData, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", data);
+        response.put("integrantes", timeNaData);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/integrantemaisusado")
     public ResponseEntity<Integrante> obterIntegranteMaisUsado(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
-            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
-    ) {
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
         Integrante integranteMaisUsado = apiService.integranteMaisUsado(dataInicial, dataFinal, todosOsTimes);
 
@@ -49,41 +52,46 @@ public class TimeController {
     }
 
     @GetMapping("/timemaiscomum")
-    public ResponseEntity<List<String>> obterTimeMaisComum(
+    public ResponseEntity<Map<String, Object>> obterTimeMaisComum(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
-            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
-    ) {
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
+
         List<Time> todosOsTimes = timeRepository.findAll();
         List<String> timeMaisComum = apiService.timeMaisComum(dataInicial, dataFinal, todosOsTimes);
 
-        return new ResponseEntity<>(timeMaisComum, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("TimeMaiscomum", timeMaisComum);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/funcaomaiscomum")
-    public ResponseEntity<String> obterFuncaoMaisComum(
+    public ResponseEntity<Map<String, Object>> obterFuncaoMaisComum(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
-            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
-    ) {
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
+
         List<Time> todosOsTimes = timeRepository.findAll();
         String funcaoMaisComum = apiService.funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
 
-        return ResponseEntity.ok(funcaoMaisComum);
+        Map<String, Object> response = new HashMap<>();
+        response.put("funcaoMaisComum", funcaoMaisComum);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/franquiamaisfamosa")
     public String obterFranquiaMaisFamosa(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
-            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
-    ) {
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
+        
         return apiService.franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
     }
 
     @GetMapping("/contagemporfranquia")
     public ResponseEntity<Map<String, Long>> obterContagemPorFranquia(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
-            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
-    ) {
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
         Map<String, Long> contagemFranquias = apiService.contagemPorFranquia(dataInicial, dataFinal, todosOsTimes);
 
@@ -93,8 +101,7 @@ public class TimeController {
     @GetMapping("/contagemporfuncao")
     public ResponseEntity<Map<String, Long>> obterContagemPorFuncao(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
-            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
-    ) {
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
         Map<String, Long> contagemFuncoes = apiService.contagemPorFuncao(dataInicial, dataFinal, todosOsTimes);
 
