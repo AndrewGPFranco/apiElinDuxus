@@ -27,7 +27,7 @@ public class TimeController {
     @Autowired
     private TimeRepository timeRepository;
 
-    @GetMapping("/integrantes")
+    @GetMapping("/timenadata")
     public ResponseEntity<Map<String, Object>> obterTimeNaData(
             @RequestParam("data") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
 

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "integrante")
 public class Integrante {
@@ -26,6 +28,7 @@ public class Integrante {
 	@Column(name = "Funcao")
 	private String funcao;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "integrante")
 	private List<ComposicaoTime> composicaoTime;
 

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "time")
 public class Time {
@@ -20,6 +22,7 @@ public class Time {
 	@Column(name = "Nome")
 	private String nome;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "time", cascade = CascadeType.ALL)
 	private List<ComposicaoTime> composicaoTime;
 

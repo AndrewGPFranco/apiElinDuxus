@@ -3,6 +3,8 @@ package br.com.duxusdesafio.model;
 import jakarta.persistence.*;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "composicao")
 public class ComposicaoTime {
@@ -11,10 +13,12 @@ public class ComposicaoTime {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "Id_Time", referencedColumnName = "id")
 	private Time time;
 
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "Id_Integrante", referencedColumnName = "id")
 	private Integrante integrante;
