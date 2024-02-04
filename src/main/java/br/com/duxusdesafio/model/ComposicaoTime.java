@@ -6,7 +6,7 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name = "composicao_time")
+@Table(name = "composicao")
 public class ComposicaoTime {
 	
 	@Id
@@ -14,9 +14,11 @@ public class ComposicaoTime {
 	private long id;
 	
 	@ManyToOne
+	@JoinColumn(name = "Id_Time", referencedColumnName = "id")
 	private Time time;
 
 	@ManyToOne
+	@JoinColumn(name = "Id_Integrante", referencedColumnName = "id")
 	private Integrante integrante;
 
 	public ComposicaoTime() {
