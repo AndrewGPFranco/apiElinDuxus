@@ -42,13 +42,16 @@ public class TimeController {
     }
 
     @GetMapping("/integrantemaisusado")
-    public ResponseEntity<Integrante> obterIntegranteMaisUsado(
+    public ResponseEntity<Map<String, Object>> obterIntegranteMaisUsado(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
             @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
         Integrante integranteMaisUsado = apiService.integranteMaisUsado(dataInicial, dataFinal, todosOsTimes);
 
-        return new ResponseEntity<>(integranteMaisUsado, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("Integrante Mais Usado", integranteMaisUsado.getNome());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/timemaiscomum")
@@ -60,7 +63,7 @@ public class TimeController {
         List<String> timeMaisComum = apiService.timeMaisComum(dataInicial, dataFinal, todosOsTimes);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("TimeMaiscomum", timeMaisComum);
+        response.put("Time Mais comum", timeMaisComum);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -74,7 +77,7 @@ public class TimeController {
         String funcaoMaisComum = apiService.funcaoMaisComum(dataInicial, dataFinal, todosOsTimes);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("funcaoMaisComum", funcaoMaisComum);
+        response.put("Função mais comum", funcaoMaisComum);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -84,7 +87,7 @@ public class TimeController {
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
             @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
-        
+
         return apiService.franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
     }
 
