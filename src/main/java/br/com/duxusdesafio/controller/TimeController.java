@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.controller;
 
+import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import br.com.duxusdesafio.repository.TimeRepository;
 import br.com.duxusdesafio.service.ApiService;
@@ -37,4 +38,17 @@ public class TimeController {
 
         return new ResponseEntity<>(integrantesDoTime, HttpStatus.OK);
     }
+
+    @GetMapping("/integrantemaisusado")
+    public ResponseEntity<Integrante> obterIntegranteMaisUsado(
+            @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+            @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal
+    ) {
+        List<Time> todosOsTimes = timeRepository.findAll();
+        Integrante integranteMaisUsado = apiService.integranteMaisUsado(dataInicial, dataFinal, todosOsTimes);
+
+        return new ResponseEntity<>(integranteMaisUsado, HttpStatus.OK);
+    }
+
+
 }
