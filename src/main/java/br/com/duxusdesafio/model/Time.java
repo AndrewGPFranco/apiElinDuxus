@@ -14,7 +14,7 @@ public class Time {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column
+	@Column(name = "Data")
     private LocalDate data;
 	
 	@OneToMany(mappedBy = "time", cascade = CascadeType.ALL)

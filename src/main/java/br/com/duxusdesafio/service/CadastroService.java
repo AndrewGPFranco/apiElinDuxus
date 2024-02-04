@@ -34,6 +34,7 @@ public class CadastroService {
         return integrante;
     }
 
+    @SuppressWarnings("null")
     public Time cadastrarTime(LocalDate data, List<Long> integrantesIds) {
         Time time = new Time();
         time.setData(data);
@@ -50,5 +51,4 @@ public class CadastroService {
 
         return time;
     }
-
 }

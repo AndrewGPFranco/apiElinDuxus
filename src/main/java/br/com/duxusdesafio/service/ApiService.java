@@ -31,7 +31,7 @@ public class ApiService {
     public List<String> timeDaData(LocalDate data, List<Time> todosOsTimes) {
 
         // Definindo um novo Array
-        List<String> integrantesTime = new ArrayList<>();
+        List<String> timeDaData = new ArrayList<>();
 
         // Iterando em cada time
         for (Time time : todosOsTimes) {
@@ -39,12 +39,12 @@ public class ApiService {
             if (time.getData().equals(data)) {
                 // Iterando a composição
                 for (ComposicaoTime composicaoTime : time.getComposicaoTime()) {
-                    integrantesTime.add(composicaoTime.getIntegrante().getNome());
+                    timeDaData.add(composicaoTime.getIntegrante().getNome());
                 }
             }
         }
 
-        return integrantesTime;
+        return timeDaData;
     }
 
 

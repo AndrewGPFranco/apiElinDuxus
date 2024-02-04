@@ -15,20 +15,19 @@ public class Integrante {
 	private long id;
 	
 	@NotNull
-	@Column
+	@Column(name = "Franquia")
 	private String franquia;
 	
 	@NotNull
-	@Column
+	@Column(name = "Nome")
 	private String nome;
 	
 	@NotNull
-	@Column
+	@Column(name = "Funcao")
 	private String funcao;
 	
 	@OneToMany(mappedBy = "integrante")
 	private List<ComposicaoTime> composicaoTime;
-
 
 	public Integrante() {
 	}
