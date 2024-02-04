@@ -30,10 +30,14 @@ public class ApiService {
      */
     public List<String> timeDaData(LocalDate data, List<Time> todosOsTimes) {
 
+        // Definindo um novo Array
         List<String> integrantesTime = new ArrayList<>();
 
+        // Iterando em cada time
         for (Time time : todosOsTimes) {
+            // Logica para ver se a data do time é igual a data definida pelo usuario
             if (time.getData().equals(data)) {
+                // Iterando a composição
                 for (ComposicaoTime composicaoTime : time.getComposicaoTime()) {
                     integrantesTime.add(composicaoTime.getIntegrante().getNome());
                 }
@@ -106,8 +110,11 @@ public class ApiService {
                 List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
                 // Incrementando
                 for (ComposicaoTime composicao : composicaoTime) {
+                    // Salvando os integrantes em uma variavel
                     Integrante integrante = composicao.getIntegrante();
+                    // Salvando a funcao de cada integrante
                     String funcao = integrante.getFuncao();
+                    // Adicionando as funções ao mapa
                     contagemFuncoes.put(funcao, contagemFuncoes.getOrDefault(funcao, 0) + 1);
                 }
             }
@@ -116,6 +123,7 @@ public class ApiService {
         // Encontrando a função mais utilizadas
         String funcaoMaisComum = "";
         int maiorContagem = 0;
+        // Iterando o MAPA e definindo a função mais comum
         for (Map.Entry<String, Integer> entry : contagemFuncoes.entrySet()) {
             if (entry.getValue() > maiorContagem) {
                 maiorContagem = entry.getValue();
@@ -131,8 +139,39 @@ public class ApiService {
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
     public String franquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        // Criando um mapa para contar as franquias
+        Map<String, Integer> contagemFranquias = new HashMap<>();
+
+        // Iterando todos os times
+        for(Time time : todosOsTimes) {
+            // Verificando algumas informações sobre as datas
+            if (dataInicial == null || dataFinal == null ||
+                    (dataInicial.compareTo(time.getData()) <= 0
+                            && dataFinal.compareTo(time.getData()) >= 0)) {
+                // Definindo uma lista com as composições dos times
+                List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
+                // Iterando todas as composições
+                for(ComposicaoTime composicao : composicaoTime) {
+                    // Salvando o integrante em uma variavel
+                    Integrante integrante = composicao.getIntegrante();
+                    // Salvando a franquia de cada integrante
+                    String franquia = integrante.getFranquia();
+                    contagemFranquias.put(franquia, contagemFranquias.getOrDefault(franquia, 0) + 1);
+                }
+            }
+        }
+
+        String franquiaMaisFamosa = "";
+        int maiorContagem = 0;
+        // Definindo a franquia mais famosa com base no MAPA
+        for (Map.Entry<String, Integer> entry : contagemFranquias.entrySet()) {
+            if (entry.getValue() > maiorContagem) {
+                maiorContagem = entry.getValue();
+                franquiaMaisFamosa = entry.getKey();
+            }
+        }
+
+        return franquiaMaisFamosa;
     }
 
 
@@ -140,16 +179,36 @@ public class ApiService {
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
     public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
+        // Criando um mapa para contar as franquias
+        Map<String, Long> contagemFranquias = todosOsTimes.stream()
+                .filter(time -> dataInicial == null || dataFinal == null ||
+                        (dataInicial.compareTo(time.getData()) <= 0 && dataFinal.compareTo(time.getData()) >= 0))
+                .flatMap(time -> time.getComposicaoTime().stream())
+                .map(ComposicaoTime::getIntegrante)
+                .filter(integrante -> integrante.getFranquia() != null)
+                .collect(Collectors.groupingBy(Integrante::getFranquia, Collectors.counting()));
+
+        return contagemFranquias;
     }
 
     /**
      * Vai retornar o número (quantidade) de Funções dentro do período
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
-        return null;
-    }
+        // Criando um mapa para contar as funções
+        Map<String, Long> contagemFuncoes = todosOsTimes.stream()
+                // Filtrando os times dentro do período das datas
+                .filter(time -> dataInicial == null || dataFinal == null ||
+                        (dataInicial.compareTo(time.getData()) <= 0 && dataFinal.compareTo(time.getData()) >= 0))
+                // Aplanando a lista de composições e integrantes
+                .flatMap(time -> time.getComposicaoTime().stream())
+                // Obtendo os integrantes
+                .map(ComposicaoTime::getIntegrante)
+                // Filtrando integrantes com função não nula
+                .filter(integrante -> integrante.getFuncao() != null)
+                // Contando as ocorrências de cada função
+                .collect(Collectors.groupingBy(Integrante::getFuncao, Collectors.counting()));
 
+        return contagemFuncoes;
+    }
 }
