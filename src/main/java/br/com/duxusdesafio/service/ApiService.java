@@ -105,8 +105,9 @@ public class ApiService {
             List<ComposicaoTime> nomesIntegrantes = time.getComposicaoTime();
 
             // Atualizar o mapa
-            for (ComposicaoTime nome : nomesIntegrantes) {
-                integrantes.put(String.valueOf(nome), integrantes.getOrDefault(nome, 0) + 1);
+            for (ComposicaoTime composicao : nomesIntegrantes) {
+                String nomeIntegrante = composicao.getIntegrante().getNome();
+                integrantes.put(nomeIntegrante, integrantes.getOrDefault(nomeIntegrante, 0) + 1);
             }
         }
 
