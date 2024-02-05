@@ -22,7 +22,7 @@ public class Integrante {
 	private String franquia;
 	
 	@NotNull
-	@Column(name = "Nome")
+	@Column(name = "Nome", unique = true)
 	private String nome;
 	
 	@NotNull
