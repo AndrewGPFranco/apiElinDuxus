@@ -2,6 +2,7 @@ package br.com.duxusdesafio.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.util.List;
 import java.util.Objects;
