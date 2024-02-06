@@ -83,12 +83,16 @@ public class TimeController {
     }
 
     @GetMapping("/franquiamaisfamosa")
-    public String obterFranquiaMaisFamosa(
+    public ResponseEntity<Map<String, Object>> obterFranquiaMaisFamosa(
             @RequestParam("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
             @RequestParam("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
         List<Time> todosOsTimes = timeRepository.findAll();
+        String franquiaMaisFamosa = apiService.franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
 
-        return apiService.franquiaMaisFamosa(dataInicial, dataFinal, todosOsTimes);
+        Map<String, Object> response = new HashMap<>();
+        response.put("Franquia mais comum", franquiaMaisFamosa);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/contagemporfranquia")
